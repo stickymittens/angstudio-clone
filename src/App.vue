@@ -15,9 +15,9 @@ import NavBarComponent from "./components/NavBarComponent.vue";
 
 <style scoped>
 #navbar {
-  z-index: 9;
   position: fixed;
-  left: 1vw;
   top: 0;
+
+  z-index: 9;
 }
 </style>

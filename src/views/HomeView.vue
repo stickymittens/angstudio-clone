@@ -71,6 +71,65 @@ const handleScroll = (carouselElement, index) => {
   }
 };
 
+let isInitialScroll = true; // Flag to track the first scroll event
+
+const scrollAll = (event) => {
+  // Get the scroll delta (up or down)
+  const delta = event.deltaY || event.detail || event.wheelDelta;
+
+  // Scroll speed factor
+  const scrollFactor = 0.5;
+
+  // Loop through carousels and apply scroll to both
+  visibleColumns.value.forEach((_, index) => {
+    const carouselElement = HomeViewConent.value.querySelector(
+      `.carousel:nth-of-type(${index + 1})`
+    );
+
+    if (carouselElement) {
+      if (isInitialScroll) {
+        // First scroll logic
+        if (delta > 0) {
+          // Scrolling down
+          if (index % 2 === 0) {
+            // Even columns (1, 3, 5, etc.)
+            carouselElement.scrollTop += delta * scrollFactor; // Scroll up
+          } else {
+            // Odd columns (2, 4, 6, etc.)
+            carouselElement.scrollTop -= delta * scrollFactor; // Scroll down
+          }
+        } else if (delta < 0) {
+          // Scrolling up
+          if (index % 2 === 0) {
+            // Even columns (1, 3, 5, etc.)
+            carouselElement.scrollTop -= delta * scrollFactor; // Scroll down
+          } else {
+            // Odd columns (2, 4, 6, etc.)
+            carouselElement.scrollTop += delta * scrollFactor; // Scroll up
+          }
+        }
+      } else {
+        // Subsequent scrolls
+        if (index % 2 === 0) {
+          // Even columns (1, 3, 5, etc.)
+          carouselElement.scrollTop += delta * scrollFactor; // Scroll down
+        } else {
+          // Odd columns (2, 4, 6, etc.)
+          carouselElement.scrollTop -= delta * scrollFactor; // Scroll up
+        }
+      }
+    }
+  });
+
+  // Prevent default scroll behavior
+  event.preventDefault();
+
+  // Set isInitialScroll to false after the first scroll event
+  if (isInitialScroll) {
+    isInitialScroll = false;
+  }
+};
+
 const openProjectAbout = () => {
   const aboutModal = ProjectAbout.value;
   if (aboutModal) {
@@ -105,7 +164,7 @@ const loadHomeViewContent = () => {
 
   const isLoadingFalseTimeout = setTimeout(() => {
     isLoading.value = false;
-  }, 2000);
+  }, 0);
 
   if (document.readyState === "complete") {
     let loadedImages = 0;
@@ -164,7 +223,7 @@ onMounted(() => {
     <p>for better reasons</p>
   </div>
 
-  <div v-else ref="HomeViewConent" class="page-container">
+  <div v-else ref="HomeViewConent" class="page-container" @wheel="scrollAll">
     <p id="background-text">Ang Studio<sup>&reg;</sup></p>
 
     <div class="carousel-container">
@@ -234,7 +293,6 @@ onMounted(() => {
   font-size: 15vw;
   font-weight: 500;
 
-  z-index: 1;
   position: absolute;
 }
 
@@ -259,35 +317,37 @@ sup {
   display: flex;
   flex-direction: column;
 
-  height: 100vh; /* Set the height of the carousel */
-  width: 20vw; /* Set the width of the carousel */
-  overflow-y: auto; /* Enable vertical scrolling */
+  height: 100%; /*each carousel*/
+  width: 20vw;
+
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 }
 
 .carousel-container .carousel {
-  opacity: 0; /* Initially hidden */
-  transform: translateY(20px); /* Start slightly below */
-  transition: opacity 0.5s ease-in, transform 0.5s ease-in; /* Smooth transition */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in, transform 0.5s ease-in; /*appearing one by one*/
 }
 
 .carousel-container .carousel:nth-child(1) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2s; /* Starts after 2 seconds */
+  animation-delay: 0s;
 }
 
 .carousel-container .carousel:nth-child(2) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.1s; /* Slightly delayed */
+  animation-delay: 0.1s;
 }
 
 .carousel-container .carousel:nth-child(3) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.2s;
+  animation-delay: 0.2s;
 }
 
 .carousel-container .carousel:nth-child(4) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.3s;
+  animation-delay: 0.3s;
 }
 
 /* Keyframes for fade-in animation */
@@ -320,6 +380,8 @@ sup {
 img {
   width: 100%;
   height: 80%;
+
+  object-fit: cover;
 
   transition: all 0.6s ease;
 }

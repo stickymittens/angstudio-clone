@@ -9,10 +9,12 @@ import LogoAnimation from "./LogoAnimation.vue";
       <li class="navbar-text un">Work</li>
       <li class="navbar-text un">About</li>
       <li class="navbar-text un">Contact</li>
-      <img
-        src="https://cdn-icons-png.flaticon.com/128/8265/8265301.png"
-        alt="change website background"
-      />
+      <li>
+        <img
+          src="https://cdn-icons-png.flaticon.com/128/8265/8265301.png"
+          alt="change website background"
+        />
+      </li>
     </ul>
   </div>
 </template>
@@ -23,8 +25,13 @@ import LogoAnimation from "./LogoAnimation.vue";
   align-items: center;
   justify-content: space-between;
 
-  padding: 0.5rem;
-  width: 98vw;
+  padding: 1vh 2vw 1vh 3vw;
+  width: 100vw;
+
+  background-color: rgba(255, 255, 255, 0.5);
+  /* background-color: green; */
+
+  margin: 0;
 }
 
 .navbar-text {
@@ -35,14 +42,20 @@ import LogoAnimation from "./LogoAnimation.vue";
 ul {
   display: flex;
   align-items: center;
+  justify-content: space-around;
 
-  gap: 10vw;
+  gap: 8vw;
 
   list-style-type: none;
+  padding: 0;
 }
 
 img {
   height: 3rem;
+}
+
+li {
+  cursor: pointer;
 }
 
 /* UNDERLINE MOVEMENT */

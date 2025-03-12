@@ -60,6 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
   padding: 0.5rem 0;
 
   width: 30vw;
+
+  cursor: pointer;
 }
 
 .navbar-text {
