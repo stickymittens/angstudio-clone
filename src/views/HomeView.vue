@@ -44,7 +44,7 @@ function columnsDelayFunct() {
         visibleColumns.value.push(columns.value[i]);
       }, i * 200);
     }
-  }, 0);
+  }, 1000);
 }
 
 columnsDelayFunct();
@@ -77,10 +77,6 @@ const scrollAll = (event) => {
   // Get the scroll delta (up or down)
   const delta = event.deltaY || event.detail || event.wheelDelta;
 
-  // Scroll speed factor
-  const scrollFactor = 0.5;
-
-  // Loop through carousels and apply scroll to both
   visibleColumns.value.forEach((_, index) => {
     const carouselElement = HomeViewConent.value.querySelector(
       `.carousel:nth-of-type(${index + 1})`
@@ -88,43 +84,35 @@ const scrollAll = (event) => {
 
     if (carouselElement) {
       if (isInitialScroll) {
-        // First scroll logic
         if (delta > 0) {
-          // Scrolling down
-          if (index % 2 === 0) {
-            // Even columns (1, 3, 5, etc.)
-            carouselElement.scrollTop += delta * scrollFactor; // Scroll up
+          console.log("touchpad scroll up");
+
+          if (index % 2 !== 0) {
+            carouselElement.scrollTop += delta;
           } else {
-            // Odd columns (2, 4, 6, etc.)
-            carouselElement.scrollTop -= delta * scrollFactor; // Scroll down
+            carouselElement.scrollTop -= delta;
           }
         } else if (delta < 0) {
-          // Scrolling up
-          if (index % 2 === 0) {
-            // Even columns (1, 3, 5, etc.)
-            carouselElement.scrollTop -= delta * scrollFactor; // Scroll down
+          console.log("touchpad scroll down");
+          if (index % 2 !== 0) {
+            carouselElement.scrollTop += delta;
           } else {
-            // Odd columns (2, 4, 6, etc.)
-            carouselElement.scrollTop += delta * scrollFactor; // Scroll up
+            carouselElement.scrollTop -= delta;
           }
         }
       } else {
-        // Subsequent scrolls
         if (index % 2 === 0) {
-          // Even columns (1, 3, 5, etc.)
-          carouselElement.scrollTop += delta * scrollFactor; // Scroll down
+          carouselElement.scrollTop += delta;
         } else {
-          // Odd columns (2, 4, 6, etc.)
-          carouselElement.scrollTop -= delta * scrollFactor; // Scroll up
+          carouselElement.scrollTop -= delta;
         }
       }
     }
   });
 
-  // Prevent default scroll behavior
+  //  prevent default scroll behaviour
   event.preventDefault();
 
-  // Set isInitialScroll to false after the first scroll event
   if (isInitialScroll) {
     isInitialScroll = false;
   }
@@ -332,22 +320,22 @@ sup {
 
 .carousel-container .carousel:nth-child(1) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 0s;
+  animation-delay: 2s;
 }
 
 .carousel-container .carousel:nth-child(2) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 0.1s;
+  animation-delay: 2.1s;
 }
 
 .carousel-container .carousel:nth-child(3) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 0.2s;
+  animation-delay: 2.2s;
 }
 
 .carousel-container .carousel:nth-child(4) {
   animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 0.3s;
+  animation-delay: 2.3s;
 }
 
 /* Keyframes for fade-in animation */
