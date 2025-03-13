@@ -29,7 +29,6 @@ import LogoAnimation from "./LogoAnimation.vue";
   width: 100vw;
 
   background-color: rgba(255, 255, 255, 0.5);
-  /* background-color: green; */
 
   margin: 0;
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import NavBarComponent from "@/components/NavBarComponent.vue";
 
 const ProjectAbout = ref(null);
 const Overlay = ref(null);
@@ -44,7 +45,7 @@ function columnsDelayFunct() {
         visibleColumns.value.push(columns.value[i]);
       }, i * 200);
     }
-  }, 1000);
+  }, 2000);
 }
 
 columnsDelayFunct();
@@ -152,7 +153,7 @@ const loadHomeViewContent = () => {
 
   const isLoadingFalseTimeout = setTimeout(() => {
     isLoading.value = false;
-  }, 0);
+  }, 2000);
 
   if (document.readyState === "complete") {
     let loadedImages = 0;
@@ -206,9 +207,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="LoadingContent" v-if="isLoading">
-    <p>Better brands</p>
-    <p>for better reasons</p>
+  <NavBarComponent id="navbar" />
+
+  <div id="loading-content" ref="LoadingContent" v-if="isLoading">
+    <p id="brands">Better brands</p>
+    <p id="reasons">for better reasons</p>
   </div>
 
   <div v-else ref="HomeViewConent" class="page-container" @wheel="scrollAll">
@@ -262,6 +265,43 @@ onMounted(() => {
 </template>
 
 <style scoped>
+#navbar {
+  position: fixed;
+  top: 0;
+
+  z-index: 9;
+}
+
+#loading-content {
+  width: 100vw;
+  height: 100vh;
+  background-color: #ecebc9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  gap: 0.5vh;
+
+  z-index: 100;
+
+  position: fixed;
+
+  font-size: large;
+  line-height: 100%;
+}
+
+#brands {
+  font-weight: 600;
+}
+
+#reasons {
+  font-family: Helvetica;
+  font-weight: 100;
+  font-size: 110%;
+  font-style: oblique;
+}
+
 .page-container {
   width: 100vw;
   height: 100vh;
