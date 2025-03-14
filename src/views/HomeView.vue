@@ -45,7 +45,7 @@ function columnsDelayFunct() {
         visibleColumns.value.push(columns.value[i]);
       }, i * 200);
     }
-  }, 2000);
+  }, 3000);
 }
 
 columnsDelayFunct();
@@ -210,8 +210,10 @@ onMounted(() => {
   <NavBarComponent id="navbar" />
 
   <div id="loading-content" ref="LoadingContent" v-if="isLoading">
-    <p id="brands">Better brands</p>
-    <p id="reasons">for better reasons</p>
+    <div class="loading-content-text">
+      <p id="brands">Better brands</p>
+      <p id="reasons">for better reasons</p>
+    </div>
   </div>
 
   <div v-else ref="HomeViewConent" class="page-container" @wheel="scrollAll">
@@ -276,12 +278,6 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   background-color: #ecebc9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-direction: column;
-  gap: 0.5vh;
 
   z-index: 100;
 
@@ -291,8 +287,29 @@ onMounted(() => {
   line-height: 100%;
 }
 
+.loading-content-text {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  gap: 0.5vh;
+}
+
+#brands,
+#reasons {
+  opacity: 0; /* Initially hidden */
+  transform: translateY(20px); /* Slightly moved down */
+  animation-fill-mode: forwards;
+}
+
 #brands {
   font-weight: 600;
+
+  animation: fadeInUp 0.7s forwards;
 }
 
 #reasons {
@@ -300,14 +317,22 @@ onMounted(() => {
   font-weight: 100;
   font-size: 110%;
   font-style: oblique;
+
+  animation: fadeInUp 1s forwards;
+  animation-delay: 0.3s;
 }
 
 .page-container {
   width: 100vw;
+
   height: 100vh;
 
   position: relative;
   overflow: hidden;
+
+  opacity: 0;
+
+  animation: fadeIn 1s ease-in forwards;
 }
 
 #background-text {
@@ -359,30 +384,50 @@ sup {
 }
 
 .carousel-container .carousel:nth-child(1) {
-  animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2s;
+  animation: fadeInDown 0.5s ease-in forwards;
+  animation-delay: 0.6s;
 }
 
 .carousel-container .carousel:nth-child(2) {
-  animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.1s;
+  animation: fadeInDown 0.5s ease-in forwards;
+  animation-delay: 0.6s;
 }
 
 .carousel-container .carousel:nth-child(3) {
-  animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.2s;
+  animation: fadeInDown 0.5s ease-in forwards;
+  animation-delay: 0.6s;
 }
 
 .carousel-container .carousel:nth-child(4) {
-  animation: fadeIn 0.5s ease-in forwards;
-  animation-delay: 2.3s;
+  animation: fadeInDown 0.5s ease-in forwards;
+  animation-delay: 0.6s;
 }
 
 /* Keyframes for fade-in animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
     transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
