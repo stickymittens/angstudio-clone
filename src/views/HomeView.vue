@@ -6,7 +6,6 @@ const ProjectAbout = ref(null);
 const Overlay = ref(null);
 
 const HomeViewConent = ref(null);
-const isLoading = ref(true);
 const LoadingContent = ref(null);
 
 const visibleColumns = ref([]);
@@ -151,16 +150,11 @@ const loadHomeViewContent = () => {
   const images = document.querySelectorAll("img");
   const allImages = images.length;
 
-  const isLoadingFalseTimeout = setTimeout(() => {
-    isLoading.value = false;
-  }, 2000);
-
   if (document.readyState === "complete") {
     let loadedImages = 0;
 
     if (allImages === 0) {
       //no img
-      isLoadingFalseTimeout;
       console.log("No images found. Content loaded.");
     } else {
       images.forEach((img) => {
@@ -170,14 +164,12 @@ const loadHomeViewContent = () => {
           img.addEventListener("load", () => {
             loadedImages++;
             if (loadedImages === allImages) {
-              isLoadingFalseTimeout;
               console.log("All images loaded.");
             }
           });
           img.addEventListener("error", () => {
             loadedImages++;
             if (loadedImages === allImages) {
-              isLoadingFalseTimeout;
               console.log(
                 "Some images failed to load, but loading is complete."
               );
@@ -188,14 +180,12 @@ const loadHomeViewContent = () => {
 
       if (loadedImages === allImages) {
         // all images loaded succesfully
-        isLoadingFalseTimeout;
         console.log("All images were already loaded. Content loaded.");
       }
     }
   } else {
     //window waiting for content to load
     window.addEventListener("load", () => {
-      isLoadingFalseTimeout;
       console.log("Window fully loaded.");
     });
   }
@@ -209,14 +199,7 @@ onMounted(() => {
 <template>
   <NavBarComponent id="navbar" />
 
-  <div id="loading-content" ref="LoadingContent" v-if="isLoading">
-    <div class="loading-content-text">
-      <p id="brands">Better brands</p>
-      <p id="reasons">for better reasons</p>
-    </div>
-  </div>
-
-  <div v-else ref="HomeViewConent" class="page-container" @wheel="scrollAll">
+  <div ref="HomeViewConent" class="page-container" @wheel="scrollAll">
     <p id="background-text">Ang Studio<sup>&reg;</sup></p>
 
     <div class="carousel-container">
@@ -274,54 +257,6 @@ onMounted(() => {
   z-index: 9;
 }
 
-#loading-content {
-  width: 100vw;
-  height: 100vh;
-  background-color: #ecebc9;
-
-  z-index: 100;
-
-  position: fixed;
-
-  font-size: large;
-  line-height: 100%;
-}
-
-.loading-content-text {
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-direction: column;
-  gap: 0.5vh;
-}
-
-#brands,
-#reasons {
-  opacity: 0; /* Initially hidden */
-  transform: translateY(20px); /* Slightly moved down */
-  animation-fill-mode: forwards;
-}
-
-#brands {
-  font-weight: 600;
-
-  animation: fadeInUp 0.7s forwards;
-}
-
-#reasons {
-  font-family: Helvetica;
-  font-weight: 100;
-  font-size: 110%;
-  font-style: oblique;
-
-  animation: fadeInUp 1s forwards;
-  animation-delay: 0.3s;
-}
-
 .page-container {
   width: 100vw;
 
@@ -332,7 +267,7 @@ onMounted(() => {
 
   opacity: 0;
 
-  animation: fadeIn 1s ease-in forwards;
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
 #background-text {
@@ -417,17 +352,6 @@ sup {
   from {
     opacity: 0;
     transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
   }
   to {
     opacity: 1;
