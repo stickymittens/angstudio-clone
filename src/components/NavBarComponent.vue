@@ -1,18 +1,21 @@
 <script setup>
 import LogoAnimation from "./LogoAnimation.vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
+import { ref } from "vue";
 
-const router = useRouter();
+// const router = useRouter();
 
-const reloadPage = () => {
-  router.go(0);
-  console.log("logo clicked");
-};
+// const reloadPage = () => {
+//   router.go(0);
+//   console.log("logo clicked");
+// };
+
+const logo = ref(null);
 </script>
 
 <template>
   <div class="navbar-container">
-    <h1 @click="reloadPage"><LogoAnimation /></h1>
+    <h1 ref="logo"><LogoAnimation /></h1>
     <ul>
       <li class="navbar-text un">Work</li>
       <li class="navbar-text un">About</li>

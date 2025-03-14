@@ -1,14 +1,41 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import NavBarComponent from "@/components/NavBarComponent.vue";
+import { useRouter } from "vue-router";
 
 const ProjectAbout = ref(null);
 const Overlay = ref(null);
 
 const HomeViewConent = ref(null);
-const LoadingContent = ref(null);
 
 const visibleColumns = ref([]);
+
+const router = useRouter();
+const isCurtainActive = ref(false);
+const navbar = ref();
+
+//CURTAIN
+const triggerCurtain = () => {
+  isCurtainActive.value = true;
+  setTimeout(() => {
+    router.go(0);
+  }, 2000);
+};
+
+const logoReload = () => {
+  if (navbar.value) {
+    const logoEl = navbar.value.$refs.logo;
+
+    // Access logo element
+    if (logoEl) {
+      logoEl.addEventListener("click", triggerCurtain);
+    }
+  }
+};
+
+onMounted(() => {
+  logoReload();
+});
 
 const columns = ref([
   [
@@ -44,7 +71,7 @@ function columnsDelayFunct() {
         visibleColumns.value.push(columns.value[i]);
       }, i * 200);
     }
-  }, 3000);
+  }, 1000);
 }
 
 columnsDelayFunct();
@@ -197,7 +224,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBarComponent id="navbar" />
+  <NavBarComponent ref="navbar" id="navbar" />
+
+  <div
+    class="curtain"
+    :class="{ curtain: true, 'curtain-active': isCurtainActive }"
+  ></div>
 
   <div ref="HomeViewConent" class="page-container" @wheel="scrollAll">
     <p id="background-text">Ang Studio<sup>&reg;</sup></p>
@@ -255,6 +287,36 @@ onMounted(() => {
   top: 0;
 
   z-index: 9;
+}
+
+.curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  transform: translateY(-100%); /* Start above the screen */
+  transition: transform 0s; /* Initially, no transform */
+}
+
+.curtain-active {
+  animation: curtainDrop 3s ease-in-out forwards;
+}
+
+@keyframes curtainDrop {
+  0% {
+    transform: translateY(-100%); /* Start above the screen */
+    z-index: 0; /* Initially behind everything */
+  }
+  50% {
+    transform: translateY(0); /* Curtain drops and covers everything */
+    z-index: 100; /* Above everything */
+  }
+  100% {
+    transform: translateY(0); /* Curtain moves down completely */
+    z-index: 0; /* Behind everything again */
+  }
 }
 
 .page-container {
