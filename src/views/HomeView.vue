@@ -1,18 +1,21 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import NavBarComponent from "@/components/NavBarComponent.vue";
 import { useRouter } from "vue-router";
 
 const ProjectAbout = ref(null);
 const Overlay = ref(null);
 
-const HomeViewConent = ref(null);
+const HomeViewContent = ref(null);
 
 const visibleColumns = ref([]);
 
 const router = useRouter();
 const isCurtainActive = ref(false);
 const navbar = ref();
+
+const isDarkMode = ref(false);
+const curtain = ref(null);
 
 //CURTAIN
 const triggerCurtain = () => {
@@ -22,7 +25,7 @@ const triggerCurtain = () => {
   }, 2000);
 };
 
-const logoReload = () => {
+const logoFunct = () => {
   if (navbar.value) {
     const logoEl = navbar.value.$refs.logo;
 
@@ -33,8 +36,42 @@ const logoReload = () => {
   }
 };
 
+const toggleDarkMode = () => {
+  if (HomeViewContent.value) {
+    // Toggle the dark mode state
+    if (isDarkMode.value) {
+      // If dark mode is on, switch to light mode
+      HomeViewContent.value.style.backgroundColor = "white";
+      HomeViewContent.value.style.color = "black";
+    } else {
+      // If dark mode is off, switch to dark mode
+      HomeViewContent.value.style.backgroundColor = "black";
+      HomeViewContent.value.style.color = "white";
+      curtain.value.style.backgroundColor = "black";
+    }
+
+    // Toggle the dark mode state
+    isDarkMode.value = !isDarkMode.value;
+  }
+};
+
+const navbarDarkMode = computed(() => ({
+  color: isDarkMode.value ? "white" : "black", // Change text color based on dark mode state
+}));
+
+const toggleElFunct = () => {
+  if (navbar.value) {
+    const toggleEl = navbar.value.$refs.toggleEl;
+    if (toggleEl) {
+      toggleEl.addEventListener("click", toggleDarkMode);
+      console.log(toggleEl);
+    }
+  }
+};
+
 onMounted(() => {
-  logoReload();
+  logoFunct();
+  toggleElFunct();
 });
 
 const columns = ref([
@@ -64,6 +101,7 @@ const columns = ref([
   ],
 ]);
 
+//CAROUSLES AND SCROLLING
 function columnsDelayFunct() {
   setTimeout(() => {
     for (let i = 0; i < columns.value.length; i++) {
@@ -105,7 +143,7 @@ const scrollAll = (event) => {
   const delta = event.deltaY || event.detail || event.wheelDelta;
 
   visibleColumns.value.forEach((_, index) => {
-    const carouselElement = HomeViewConent.value.querySelector(
+    const carouselElement = HomeViewContent.value.querySelector(
       `.carousel:nth-of-type(${index + 1})`
     );
 
@@ -224,14 +262,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBarComponent ref="navbar" id="navbar" />
+  <NavBarComponent ref="navbar" id="navbar" :style="navbarDarkMode" />
 
   <div
+    ref="curtain"
     class="curtain"
     :class="{ curtain: true, 'curtain-active': isCurtainActive }"
   ></div>
 
-  <div ref="HomeViewConent" class="page-container" @wheel="scrollAll">
+  <div ref="HomeViewContent" class="page-container" @wheel="scrollAll">
     <p id="background-text">Ang Studio<sup>&reg;</sup></p>
 
     <div class="carousel-container">

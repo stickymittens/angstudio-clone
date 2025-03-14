@@ -11,16 +11,17 @@ import { ref } from "vue";
 // };
 
 const logo = ref(null);
+const toggleEl = ref(null);
 </script>
 
 <template>
-  <div class="navbar-container">
+  <div class="navbar-container" ref="navbar">
     <h1 ref="logo"><LogoAnimation /></h1>
     <ul>
       <li class="navbar-text un">Work</li>
       <li class="navbar-text un">About</li>
       <li class="navbar-text un">Contact</li>
-      <li>
+      <li ref="toggleEl">
         <img
           src="https://cdn-icons-png.flaticon.com/128/8265/8265301.png"
           alt="change website background"
