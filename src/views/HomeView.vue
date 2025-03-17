@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import NavBarComponent from "@/components/NavBarComponent.vue";
 import { useRouter } from "vue-router";
+import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const ProjectAbout = ref(null);
 const Overlay = ref(null);
@@ -14,8 +15,8 @@ const router = useRouter();
 const isCurtainActive = ref(false);
 const navbar = ref();
 
-const isDarkMode = ref(false);
 const curtain = ref(null);
+const isDarkMode = useDarkModeStore();
 
 //CURTAIN
 const triggerCurtain = () => {
@@ -25,11 +26,9 @@ const triggerCurtain = () => {
   }, 2000);
 };
 
-const logoFunct = () => {
+const clickLogoToRefresh = () => {
   if (navbar.value) {
     const logoEl = navbar.value.$refs.logo;
-
-    // Access logo element
     if (logoEl) {
       logoEl.addEventListener("click", triggerCurtain);
     }
@@ -40,11 +39,9 @@ const toggleDarkMode = () => {
   if (HomeViewContent.value) {
     // Toggle the dark mode state
     if (isDarkMode.value) {
-      // If dark mode is on, switch to light mode
       HomeViewContent.value.style.backgroundColor = "white";
       HomeViewContent.value.style.color = "black";
     } else {
-      // If dark mode is off, switch to dark mode
       HomeViewContent.value.style.backgroundColor = "black";
       HomeViewContent.value.style.color = "white";
       curtain.value.style.backgroundColor = "black";
@@ -55,23 +52,19 @@ const toggleDarkMode = () => {
   }
 };
 
-const navbarDarkMode = computed(() => ({
-  color: isDarkMode.value ? "white" : "black", // Change text color based on dark mode state
-}));
-
-const toggleElFunct = () => {
+//getting the toggle el form navbar
+const clickDotToToggleDarkMode = () => {
   if (navbar.value) {
     const toggleEl = navbar.value.$refs.toggleEl;
     if (toggleEl) {
       toggleEl.addEventListener("click", toggleDarkMode);
-      console.log(toggleEl);
     }
   }
 };
 
 onMounted(() => {
-  logoFunct();
-  toggleElFunct();
+  clickLogoToRefresh();
+  clickDotToToggleDarkMode();
 });
 
 const columns = ref([
@@ -262,7 +255,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBarComponent ref="navbar" id="navbar" :style="navbarDarkMode" />
+  <NavBarComponent ref="navbar" id="navbar" />
 
   <div
     ref="curtain"

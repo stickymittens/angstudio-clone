@@ -55,7 +55,8 @@ setTimeout(() => {
 #brands {
   font-weight: 600;
 
-  animation: fadeInUp 0.7s forwards;
+  animation: fadeInUp 0.8s forwards;
+  animation-delay: 0.5s;
 }
 
 #reasons {
@@ -64,8 +65,8 @@ setTimeout(() => {
   font-size: 110%;
   font-style: oblique;
 
-  animation: fadeInUp 1s forwards;
-  animation-delay: 0.3s;
+  animation: fadeInUp 1.2s forwards;
+  animation-delay: 1s;
 }
 
 @keyframes fadeInUp {
