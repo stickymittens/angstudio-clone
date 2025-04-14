@@ -353,7 +353,7 @@ onMounted(() => {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 200vh;
   background-color: white;
   transform: translateY(-100%);
   transition: transform 0s;
@@ -366,9 +366,9 @@ onMounted(() => {
 @keyframes curtainDrop {
   0% {
     transform: translateY(-100%);
-    z-index: 0;
+    z-index: 100;
   }
-  50% {
+  99% {
     transform: translateY(0);
     z-index: 100;
   }
@@ -391,6 +391,8 @@ onMounted(() => {
   animation: fadeIn 0.5s ease-in forwards;
 
   background-color: white;
+
+  transition: ease-in 0.2s;
 }
 
 #background-text {

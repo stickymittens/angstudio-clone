@@ -63,7 +63,7 @@ const toggleDarkMode = () => {
     ref="navbar"
     :class="{ dark: isDarkMode.darkMode }"
   >
-    <h1 ref="logo"><LogoAnimation /></h1>
+    <div ref="logo"><LogoAnimation /></div>
     <ul>
       <li class="navbar-text un">Work</li>
       <li class="navbar-text un">About</li>
