@@ -1,6 +1,6 @@
 <script setup>
 import LogoAnimation from "./LogoAnimation.vue";
-import { ref, onMounted, nextTick } from "vue";
+import { ref } from "vue";
 import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const isDarkMode = useDarkModeStore();
@@ -13,15 +13,41 @@ const dot = ref(null);
 const square = ref(null);
 
 const toggleDarkMode = () => {
-  console.log("Toggling dark mode");
+  isDarkMode.darkMode = !isDarkMode.darkMode;
+  console.log(isDarkMode.darkMode);
 
   if (dot.value) {
     if (isDarkMode.darkMode) {
-      dot.value.style.opacity = "1"; // Ensure it is fully visible
-      dot.value.style.transform = "scale(1)"; // Full size
-    } else if (!isDarkMode.darkMode) {
-      dot.value.style.opacity = "0"; // Fade out
-      dot.value.style.transform = "scale(0)"; // Shrink to 0
+      dot.value.style.backgroundColor = "white";
+      dot.value.classList.add("disappear");
+
+      setTimeout(() => {
+        dot.value.style.opacity = 0;
+      }, 300);
+
+      square.value.style.backgroundColor = "white";
+      square.value.classList.add("appear");
+      setTimeout(() => {
+        square.value.style.opacity = 0;
+      }, 300);
+
+      dot.value.classList.remove("appear");
+      square.value.classList.remove("disappear");
+    } else {
+      square.value.style.backgroundColor = "black";
+      square.value.classList.add("disappear");
+      setTimeout(() => {
+        square.value.style.opacity = 0;
+      }, 300);
+
+      dot.value.style.backgroundColor = "black";
+      dot.value.classList.add("appear");
+      setTimeout(() => {
+        dot.value.style.opacity = 0;
+      }, 300);
+
+      dot.value.classList.remove("disappear");
+      square.value.classList.remove("appear");
     }
   }
 };
@@ -39,12 +65,13 @@ const toggleDarkMode = () => {
       <li class="navbar-text un">About</li>
       <li class="navbar-text un">Contact</li>
       <li ref="toggleEl" @click="toggleDarkMode" class="toggle-li">
-        <img
+        <div
           src="https://cdn-icons-png.flaticon.com/128/8265/8265301.png"
           alt="switch to dark mode"
           ref="dot"
           id="dot"
-        />
+        ></div>
+
         <div
           alt="switch to light mode"
           id="dark-mode-square"
@@ -64,14 +91,14 @@ const toggleDarkMode = () => {
   padding: 1vh 2vw 1vh 3vw;
   width: 100vw;
 
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.719);
 
   margin: 0;
 }
 
 .navbar-text {
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 ul {
@@ -110,13 +137,12 @@ li.un:hover::after {
   left: 0;
 }
 
+/* TOGGLE BOX */
 .toggle-li {
   width: 3rem;
   height: 3rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
 }
 
 .dark {
@@ -125,34 +151,58 @@ li.un:hover::after {
 }
 
 #dot {
-  height: 3rem;
-  transform: scale(1);
+  height: 0.6rem;
+  width: 0.6rem;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 1;
+  /* transform: scale(1); */
 }
 
 #dark-mode-square {
-  height: 0.5rem;
-  width: 0.5rem;
+  height: 0.6rem;
+  width: 0.6rem;
   background-color: white;
+  border: none;
+  opacity: 0;
+  /* transform: scale(0); */
 }
 
-@keyframes disappearLi {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+#dot,
+#dark-mode-square {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
 }
 
-/* @keyframes appearLi {
-  0% {
-    opacity: 0;
+.disappear {
+  animation: disappear 0.3s ease;
+}
 
-    transform: scale(0);
-  }
-  100% {
-    opacity: 1;
+.appear {
+  animation: appear 0.3s ease 0.3s forwards;
+}
+
+@keyframes disappear {
+  0% {
     transform: scale(1);
+    opacity: 1;
   }
-} */
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>

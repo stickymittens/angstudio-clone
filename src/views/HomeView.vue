@@ -23,7 +23,7 @@ const triggerCurtain = () => {
   isCurtainActive.value = true;
   setTimeout(() => {
     router.go(0);
-  }, 2000);
+  }, 1500);
 };
 
 const clickLogoToRefresh = () => {
@@ -37,17 +37,15 @@ const clickLogoToRefresh = () => {
 
 const toggleDarkMode = () => {
   if (HomeViewContent.value) {
-    // Toggle the dark mode state
-    if (isDarkMode.value) {
-      HomeViewContent.value.style.backgroundColor = "white";
-      HomeViewContent.value.style.color = "black";
-    } else {
+    if (isDarkMode.darkMode) {
       HomeViewContent.value.style.backgroundColor = "black";
       HomeViewContent.value.style.color = "white";
-      curtain.value.style.backgroundColor = "black";
+    } else {
+      HomeViewContent.value.style.backgroundColor = "white";
+      HomeViewContent.value.style.color = "black";
+      curtain.value.style.backgroundColor = "white";
     }
 
-    // Toggle the dark mode state
     isDarkMode.value = !isDarkMode.value;
   }
 };
@@ -129,7 +127,7 @@ const handleScroll = (carouselElement, index) => {
   }
 };
 
-let isInitialScroll = true; // Flag to track the first scroll event
+let isInitialScroll = true; //first scroll
 
 const scrollAll = (event) => {
   // Get the scroll delta (up or down)
@@ -168,7 +166,7 @@ const scrollAll = (event) => {
     }
   });
 
-  //  prevent default scroll behaviour
+  //prevent default scroll behaviour
   event.preventDefault();
 
   if (isInitialScroll) {
@@ -237,12 +235,10 @@ const loadHomeViewContent = () => {
       });
 
       if (loadedImages === allImages) {
-        // all images loaded succesfully
         console.log("All images were already loaded. Content loaded.");
       }
     }
   } else {
-    //window waiting for content to load
     window.addEventListener("load", () => {
       console.log("Window fully loaded.");
     });
@@ -328,26 +324,26 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   background-color: white;
-  transform: translateY(-100%); /* Start above the screen */
-  transition: transform 0s; /* Initially, no transform */
+  transform: translateY(-100%);
+  transition: transform 0s;
 }
 
 .curtain-active {
-  animation: curtainDrop 3s ease-in-out forwards;
+  animation: curtainDrop 2s ease-in-out forwards;
 }
 
 @keyframes curtainDrop {
   0% {
-    transform: translateY(-100%); /* Start above the screen */
-    z-index: 0; /* Initially behind everything */
+    transform: translateY(-100%);
+    z-index: 0;
   }
   50% {
-    transform: translateY(0); /* Curtain drops and covers everything */
-    z-index: 100; /* Above everything */
+    transform: translateY(0);
+    z-index: 100;
   }
   100% {
-    transform: translateY(0); /* Curtain moves down completely */
-    z-index: 0; /* Behind everything again */
+    transform: translateY(0);
+    z-index: 0;
   }
 }
 
