@@ -18,6 +18,8 @@ const toggleDarkMode = () => {
 
   if (dot.value) {
     if (isDarkMode.darkMode) {
+      navbar.value.classList.add("dark");
+
       dot.value.style.backgroundColor = "white";
       dot.value.classList.add("disappear");
 
@@ -34,6 +36,8 @@ const toggleDarkMode = () => {
       dot.value.classList.remove("appear");
       square.value.classList.remove("disappear");
     } else {
+      navbar.value.classList.remove("dark");
+
       square.value.style.backgroundColor = "black";
       square.value.classList.add("disappear");
       setTimeout(() => {
@@ -135,6 +139,10 @@ li.un::after {
 li.un:hover::after {
   width: 100%;
   left: 0;
+}
+
+.dark li.un::after {
+  background: white;
 }
 
 /* TOGGLE BOX */

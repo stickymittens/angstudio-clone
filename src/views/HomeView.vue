@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { useDarkModeStore } from "@/stores/darkModeStore";
 
 const ProjectAbout = ref(null);
+const FullProjectButton = ref(null);
 const Overlay = ref(null);
 
 const HomeViewContent = ref(null);
@@ -17,6 +18,8 @@ const navbar = ref();
 
 const curtain = ref(null);
 const isDarkMode = useDarkModeStore();
+
+const currentImgSrc = ref(null);
 
 //CURTAIN
 const triggerCurtain = () => {
@@ -40,10 +43,26 @@ const toggleDarkMode = () => {
     if (isDarkMode.darkMode) {
       HomeViewContent.value.style.backgroundColor = "black";
       HomeViewContent.value.style.color = "white";
+
+      //project about
+      ProjectAbout.value.classList.add("dark");
+      ProjectAbout.value.style.backgroundColor = "black";
+
+      //full project btn
+      FullProjectButton.value.classList.remove("full-project-btn-light");
+      FullProjectButton.value.classList.add("full-project-btn-dark");
     } else {
       HomeViewContent.value.style.backgroundColor = "white";
       HomeViewContent.value.style.color = "black";
       curtain.value.style.backgroundColor = "white";
+
+      //project about
+      ProjectAbout.value.classList.remove("dark");
+      ProjectAbout.value.style.backgroundColor = "white";
+
+      //full project btn
+      FullProjectButton.value.classList.remove("full-project-btn-dark");
+      FullProjectButton.value.classList.add("full-project-btn-light");
     }
 
     isDarkMode.value = !isDarkMode.value;
@@ -174,7 +193,8 @@ const scrollAll = (event) => {
   }
 };
 
-const openProjectAbout = () => {
+const openProjectAbout = (imgSrc) => {
+  currentImgSrc.value = imgSrc;
   const aboutModal = ProjectAbout.value;
   if (aboutModal) {
     aboutModal.classList.add("show");
@@ -259,7 +279,7 @@ onMounted(() => {
     :class="{ curtain: true, 'curtain-active': isCurtainActive }"
   ></div>
 
-  <div ref="HomeViewContent" class="page-container" @wheel="scrollAll">
+  <div ref="HomeViewContent" class="home-view" @wheel="scrollAll">
     <p id="background-text">Ang Studio<sup>&reg;</sup></p>
 
     <div class="carousel-container">
@@ -277,7 +297,7 @@ onMounted(() => {
         >
           <img
             :src="src"
-            @click="openProjectAbout"
+            @click="openProjectAbout(src)"
             class="project-img"
             alt="Project Image"
           />
@@ -291,11 +311,22 @@ onMounted(() => {
         >Close</span
       >
       <div class="about-text-container">
-        <p>Picture Placeholder</p>
-        <!-- <img src="" /> -->
+        <div class="about-picture-frame">
+          <img :src="currentImgSrc" alt="Selected project image" />
+        </div>
         <div class="about-text-content">
-          <h1>Project About</h1>
-          <p>Short About</p>
+          <h1>Brand's name</h1>
+          <h2>Short explanation of the project</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda
+            asperiores hic tempore, rem possimus ab quas, necessitatibus facilis
+            fugit non eos labore incidunt, quidem vero delectus. Aliquam esse
+            quibusdam enim.
+          </p>
+
+          <button ref="FullProjectButton" class="full-project-btn">
+            View full project
+          </button>
         </div>
       </div>
     </div>
@@ -347,7 +378,7 @@ onMounted(() => {
   }
 }
 
-.page-container {
+.home-view {
   width: 100vw;
 
   height: 100vh;
@@ -358,6 +389,8 @@ onMounted(() => {
   opacity: 0;
 
   animation: fadeIn 0.5s ease-in forwards;
+
+  background-color: white;
 }
 
 #background-text {
@@ -453,6 +486,7 @@ sup {
   flex-shrink: 0;
 
   height: 40vh;
+  border-radius: 25px;
 
   display: flex;
   justify-content: center;
@@ -462,19 +496,24 @@ sup {
   box-sizing: border-box;
 
   transition: all 0.6s ease;
+  border: none;
 }
 
-img {
+.project-img {
   width: 100%;
   height: 80%;
 
   object-fit: cover;
 
   transition: all 0.6s ease;
+
+  border-radius: 25px;
+
+  cursor: pointer;
 }
 
-img:hover {
-  transform: scale(1.2);
+.project-img:hover {
+  transform: scale(1, 1.2);
   transform-origin: center;
 }
 
@@ -494,7 +533,7 @@ img:hover {
 
   display: flex;
   flex-direction: column;
-  gap: 4vh;
+  gap: 2vh;
 
   height: 90vh;
   width: 100vw;
@@ -502,8 +541,8 @@ img:hover {
   left: 0;
   bottom: 0;
 
-  background-color: white;
-  padding: 3vh 10vw 10vh 10vw;
+  background-color: inherit;
+  padding: 2vh 5vw 5vh 5vw;
 
   z-index: 10;
 
@@ -515,30 +554,102 @@ img:hover {
 
 .about-text-container {
   display: flex;
-  gap: 10vw;
+  justify-content: center;
+  align-items: center;
 
   height: 100%;
 
-  background-color: aqua;
+  /* background-color: aqua; */
+}
+
+.about-picture-frame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 60vh;
+}
+
+.about-picture-frame img {
+  object-fit: cover;
+  height: 100%;
+  width: 80%;
+
+  border-radius: 50px;
 }
 
 .about-text-content {
   display: flex;
   flex-direction: column;
+  gap: 1vh;
 
-  height: 100%;
+  height: 70%;
   width: 100%;
 
-  text-align: center;
+  text-align: left;
 
-  padding: 5vh 5vw;
+  padding: 5vh 5vw 5vh 1vw;
 
-  background-color: yellow;
+  /* background-color: yellow; */
+}
+.about-text-content h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+.about-text-content h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.about-text-content p {
+  margin-top: 2vh;
+}
+
+.full-project-btn {
+  font-size: 1rem;
+  font-weight: 500;
+
+  margin: 2vh 0;
+  padding: 0.5rem 1rem;
+
+  width: max-content;
+
+  border: none;
+  border-radius: 25px;
+
+  cursor: pointer;
+}
+
+.full-project-btn:hover {
+  background-color: black;
+  color: white;
+}
+
+.full-project-btn-light {
+  background-color: #f5f5f5;
+  color: black;
+}
+
+.full-project-btn-light:hover {
+  background-color: black;
+  color: white;
+}
+
+/* Dark mode styles */
+.full-project-btn-dark {
+  background-color: #696969;
+  color: white;
+}
+
+.full-project-btn-dark:hover {
+  background-color: white;
+  color: black;
 }
 
 #about-close-btn {
   font-size: 2vh;
   align-self: flex-end;
+  cursor: pointer;
 }
 
 #overlay {
@@ -570,6 +681,10 @@ span.un::after {
   height: 1px;
   width: 0%;
   transition: 300ms ease-in-out;
+}
+
+.dark .un::after {
+  background: white;
 }
 
 span.un:hover::after {
