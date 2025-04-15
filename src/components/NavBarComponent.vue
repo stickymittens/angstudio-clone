@@ -63,7 +63,7 @@ const toggleDarkMode = () => {
     ref="navbar"
     :class="{ dark: isDarkMode.darkMode }"
   >
-    <div ref="logo"><LogoAnimation /></div>
+    <div ref="logo" id="logo"><LogoAnimation /></div>
     <ul>
       <li class="navbar-text un">Work</li>
       <li class="navbar-text un">About</li>
@@ -94,6 +94,7 @@ const toggleDarkMode = () => {
 
   padding: 1vh 2vw 1vh 3vw;
   width: 100vw;
+  height: 10vh;
 
   background-color: rgba(255, 255, 255, 0.719);
 

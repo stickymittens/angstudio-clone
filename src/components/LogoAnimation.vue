@@ -1,39 +1,28 @@
 <script setup>
-document.addEventListener("DOMContentLoaded", function () {
+import { onMounted } from "vue";
+
+onMounted(() => {
   const logoContainer = document.querySelector(".logo-container");
+  const first = document.querySelector(".first");
+  const second = document.querySelector(".second");
+  const third = document.querySelector(".third");
 
-  //all of the ifs are to assure that the elements are rendered and can be operated on
+  if (!second || !third) return;
+
+  const secondWidth = second.getBoundingClientRect().width;
+  third.style.transform = `translateX(${-secondWidth}px)`;
+
+  second.style.transform = `translateY(-1.5rem)`;
+
   if (logoContainer) {
-    logoContainer.addEventListener("mouseover", function () {
-      const first = document.querySelector(".first");
-      const second = document.querySelector(".second");
-      const third = document.querySelector(".third");
-
-      if (first && second && third) {
-        const firstWidth = first.getBoundingClientRect().width;
-        const secondWidth = second.getBoundingClientRect().width;
-
-        // when hovered - second is visible
-        second.style.opacity = "1";
-
-        // and second and third move to teh right
-        second.style.transform = `translateX(${firstWidth}px)`; // not adding spaced as I already have gap 0.4rem in css
-        third.style.transform = `translateX(${secondWidth}px)`;
-      }
+    logoContainer.addEventListener("mouseover", () => {
+      third.style.transform = `translateX(0.1rem)`;
+      second.style.transform = `translateY(0)`;
     });
 
-    logoContainer.addEventListener("mouseout", function () {
-      const second = document.querySelector(".second");
-      const third = document.querySelector(".third");
-
-      //when logo not hovered - second invisible and third goes back it its original place
-      if (second) {
-        second.style.opacity = "0";
-      }
-
-      if (third) {
-        third.style.transform = "translateX(0)";
-      }
+    logoContainer.addEventListener("mouseout", () => {
+      second.style.transform = `translateY(-1.5rem)`;
+      third.style.transform = `translateX(${-secondWidth}px)`;
     });
   }
 });
@@ -53,15 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
   align-items: baseline;
 
   position: relative;
+
   word-spacing: 0.1rem;
-  gap: 0.3rem;
 
   overflow-y: hidden;
-  padding: 0.5rem 0;
 
   width: 30vw;
+  height: 1.6rem;
 
   cursor: pointer;
+
+  /* border: 1px solid red; */
 }
 
 .navbar-text {
@@ -70,19 +61,16 @@ document.addEventListener("DOMContentLoaded", function () {
   white-space: nowrap;
 
   vertical-align: baseline;
-  line-height: 1;
 }
 
-.navbar-text.second {
-  opacity: 0;
-  position: absolute;
-  pointer-events: none;
-  transition: opacity 0.2s ease-in-out;
-
-  bottom: 0.5rem;
+.second {
+  transform: translateY(-1.5rem);
+  transition: transform 0.3s ease-out;
 }
 
-.navbar-text.third {
-  transition: transform 0.3s ease-in-out;
+.third {
+  padding-left: 0.3rem;
+
+  transition: transform 0.3s ease-out;
 }
 </style>

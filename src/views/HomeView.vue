@@ -503,7 +503,7 @@ sup {
 
 .project-img {
   width: 100%;
-  height: 80%;
+  height: 90%;
 
   object-fit: cover;
 
@@ -515,8 +515,13 @@ sup {
 }
 
 .project-img:hover {
-  transform: scale(1, 1.2);
+  width: 100%;
+  height: 80%;
+
+  transform: scale(0.95, 0.95);
   transform-origin: center;
+
+  transition: all 0.7s ease;
 }
 
 /* hide scrollbars */
@@ -541,7 +546,7 @@ sup {
   width: 98vw;
 
   left: 1vw;
-  bottom: 1vh;
+  top: 11vh;
 
   background-color: inherit;
   padding: 5vh 8vw 5vh 8vw;
@@ -655,7 +660,7 @@ sup {
 }
 
 #about-close-btn {
-  font-size: 2vh;
+  font-size: 1rem;
   align-self: flex-end;
   cursor: pointer;
 
