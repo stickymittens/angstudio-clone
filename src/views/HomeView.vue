@@ -542,11 +542,11 @@ sup {
   flex-direction: column;
   gap: 2vh;
 
-  height: 90vh;
+  height: 86vh;
   width: 98vw;
 
   left: 1vw;
-  top: 11vh;
+  top: 12vh;
 
   background-color: inherit;
   padding: 5vh 8vw 5vh 8vw;
